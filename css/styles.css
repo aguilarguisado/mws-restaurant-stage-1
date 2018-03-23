@@ -78,12 +78,13 @@ nav {
 nav h1 {
   margin: auto;
   padding: 5px;
+
 }
 nav h1 a {
   color: #fff;
   font-size: 14pt;
-  font-weight: 200;
-  letter-spacing: 10px;
+  font-weight: 150;
+  letter-spacing: 4px;
   text-transform: uppercase;
 }
 #breadcrumb {
@@ -240,7 +241,7 @@ nav h1 a {
 .inside #footer {
   bottom: 0;
   position: absolute;
-  width: 50%;
+  width: 100%;
 }
 #restaurant-name {
   color: #f18200;
@@ -331,7 +332,9 @@ nav h1 a {
 }
 
 @media screen and (max-width: 400px){
- 
+  nav h1 a {
+    font-size: 12pt;
+  }
 }
 
 /* Minor breakpoints */

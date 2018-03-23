@@ -75,12 +75,14 @@ nav {
   align-items: center;
   text-align:center;
 }
-nav h1 {
+nav h1,
+nav p {
   margin: auto;
   padding: 5px;
 
 }
-nav h1 a {
+nav h1 a,
+nav p a {
   color: #fff;
   font-size: 14pt;
   font-weight: 150;

@@ -5,6 +5,7 @@
 * {
   margin: 0;
   padding: 0;
+  font-family: 'Open Sans', sans-serif;
 }
   
 
@@ -20,18 +21,17 @@ nav a, button{
   
 
 body,td,th,p{
-	font-family: Arial, Helvetica, sans-serif;
 	font-size: 10pt;
 	color: #333;
 	line-height: 1.5;
 }
 body {
+  line-height: 1.5;
 	background-color: #fdfdfd;
 	margin: 0;
 	position:relative;
 }
 ul, li {
-	font-family: Arial, Helvetica, sans-serif;
 	font-size: 10pt;
 	color: #333;
 }
@@ -47,7 +47,6 @@ a img{
 	border: none 0px #fff;
 }
 h1, h2, h3, h4, h5, h6 {
-  font-family: Arial, Helvetica, sans-serif;
   margin: 0 0 20px;
 }
 article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
@@ -146,7 +145,6 @@ nav p a {
 .filter-options select {
   background-color: white;
   border: 1px solid #fff;
-  font-family: Arial,sans-serif;
   font-size: 11pt;
   height: 35px;
   letter-spacing: 0;
@@ -168,7 +166,6 @@ nav p a {
 #restaurants-list li {
   background-color: #fff;
   border-radius: 2px;
-  font-family: Arial,sans-serif;
   margin: 15px;
   min-height: 380px;
   text-align: left;
@@ -194,7 +191,6 @@ nav p a {
 }
 #restaurants-list li h1 {
   color: #f18200;
-  font-family: Arial,sans-serif;
   font-size: 14pt;
   font-weight: 200;
   letter-spacing: 0;
@@ -235,7 +231,6 @@ nav p a {
 
 #restaurant-name {
   color: #f18200;
-  font-family: Arial,sans-serif;
   font-size: 20pt;
   font-weight: 200;
   letter-spacing: 0;
@@ -247,7 +242,7 @@ nav p a {
 	width: 90%;
 }
 #restaurant-address {
-  font-size: 12pt;
+  font-size: 1.3rem;
   margin: 10px 0px;
 }
 #restaurant-cuisine {
@@ -310,6 +305,8 @@ nav p a {
 }
 #restaurant-hours td {
   color: #666;
+  padding: 5px;
+  font-size: 1.2em;
 }
 
 /* ====================== Media Queries ====================== */

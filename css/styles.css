@@ -264,6 +264,7 @@ nav p a {
   width: calc(50% - 20px);
   margin-right: 20px;
 }
+
 #restaurant-overview,
 #restaurant-main-info{
   max-width:50%;
@@ -421,7 +422,8 @@ nav p a {
 
 @media screen and (min-width: 1280px){
   #restaurant-container,
-  #reviews-container{
+  #reviews-container,
+  #restaurants-list{
     max-width: 80%;
     margin:auto;
   }

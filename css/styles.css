@@ -257,15 +257,14 @@ nav p a {
   text-transform: uppercase;
 	width: 90%;
 }
-
+#restaurant-overview{
+  align-self: center;
+}
 #restaurant-overview,
 #restaurant-main-info{
   max-width:50%;
 }
 
-#restaurant-main-info{
-  align-self: flex-end;
-}
 
 #restaurant-container, #reviews-container {
   border-bottom: 1px solid #d9d9d9;
@@ -356,6 +355,14 @@ nav p a {
   nav h1 a,
   nav p a {
     font-size: 12pt;
+  }
+}
+
+@media screen and (min-width: 1280px){
+  #restaurant-container,
+  #reviews-container{
+    max-width: 80%;
+    margin:auto;
   }
 }
 

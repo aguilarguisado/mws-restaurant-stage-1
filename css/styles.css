@@ -36,11 +36,11 @@ ul, li {
 	color: #333;
 }
 a {
-	color: orange;
+	color: #1c79c0;
 	text-decoration: none;
 }
 a:hover, a:focus {
-	color: #3397db;
+  color: #1c79c0;
 	text-decoration: none;
 }
 a img{
@@ -110,13 +110,13 @@ nav p a {
 
 /* Add a color to all links inside the list */
 #breadcrumb li a {
-    color: #0275d8;
+    color: #0275#1c79c0;
     text-decoration: none;
 }
 
 /* Add a color on mouse-over */
 #breadcrumb li a:hover {
-    color: #01447e;
+    color: #1c79c0;
     text-decoration: underline;
 }
 /* ====================== Map ====================== */
@@ -130,7 +130,7 @@ nav p a {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  background-color: #3397DB;
+  background-color: #1c79c0;
   align-items: center;
 }
 .filter-options h2 {
@@ -192,7 +192,7 @@ nav p a {
   min-width: 100%;
 }
 #restaurants-list li h1 {
-  color: #f18200;
+  color: #1c79c0;
   font-size: 14pt;
   font-weight: 200;
   letter-spacing: 0;
@@ -232,7 +232,7 @@ nav p a {
 }
 
 #restaurant-name {
-  color: #f18200;
+  color: #1c79c0;
   font-size: 20pt;
   font-weight: 200;
   letter-spacing: 0;
@@ -280,9 +280,9 @@ nav p a {
   padding: 30px 40px 80px;
 }
 #reviews-container h2 {
-  color: #f58500;
-  font-size: 24pt;
-  font-weight: 300;
+  color: #1c79c0;
+  font-size: 20pt;
+  font-weight: 200;
   letter-spacing: -1px;
   padding-bottom: 1pt;
 }

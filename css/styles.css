@@ -314,7 +314,7 @@ nav p a {
 
 /* ====================== Media Queries ====================== */
 
-@media screen and (min-width: 800px){
+@media screen and (min-width: 900px){
   .filter-options{
     flex-wrap: inherit;
   }
@@ -323,42 +323,23 @@ nav p a {
     width: 25%;
     min-width: 200px;
   }
-}
-
-@media screen and (min-width:400px) and (max-width: 800px){
-  .filter-options select{
-    width: calc((100% - 40px) / 2);
-    min-width: 200px;
-  }
-  
-}
-
-@media screen and (max-width: 400px){
-  nav h1 a {
-    font-size: 12pt;
-  }
-
-  #restaurant-overview,
-  #restaurant-main-info{
-    max-width:100%;
-  }
-
-}
-
-/* Minor breakpoints */
-
-/* Minor break points for restaurant listing */
-@media screen and (min-width: 900px){
   #restaurants-list li {
     width: calc((100% - 90px) / 3);    
   }
 }
 
 @media screen and (min-width:600px) and (max-width: 900px){
+  .filter-options select{
+    width: calc((100% - 40px) / 2);
+    min-width: 200px;
+  }
+
   #restaurants-list li {
     width: calc((100% - 60px) / 2);    
   }
+  
 }
+
 
 @media screen and (max-width:600px){
 
@@ -367,3 +348,17 @@ nav p a {
     max-width:100%;
   }
 }
+
+
+
+/* Minor breakpoints */
+
+/* Minor break points for restaurant listing */
+
+@media screen and (max-width: 400px){
+  nav h1 a,
+  nav p a {
+    font-size: 12pt;
+  }
+}
+

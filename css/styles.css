@@ -95,7 +95,6 @@ nav p a {
     background-color: #eee;
     font-size: 17px;
     margin: 0;
-    width: calc(50% - 80px);
 }
 
 /* Display list items side by side */
@@ -264,16 +263,22 @@ nav p a {
 	width: 90%;
 }
 
-#restaurant-main-info,
-#restaurant-hours{
-  width:50%;
+#restaurant-overview,
+#restaurant-main-info{
+  max-width:50%;
+}
+
+#restaurant-main-info{
+  align-self: flex-end;
 }
 
 #restaurant-container, #reviews-container {
   border-bottom: 1px solid #d9d9d9;
   border-top: 1px solid #fff;
   padding: 40px 40px 30px;
-  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-wrap: wrap;  
 }
 #reviews-container {
   padding: 30px 40px 80px;
@@ -332,6 +337,12 @@ nav p a {
   nav h1 a {
     font-size: 12pt;
   }
+
+  #restaurant-overview,
+  #restaurant-main-info{
+    max-width:100%;
+  }
+
 }
 
 /* Minor breakpoints */
@@ -346,5 +357,13 @@ nav p a {
 @media screen and (min-width:600px) and (max-width: 900px){
   #restaurants-list li {
     width: calc((100% - 60px) / 2);    
+  }
+}
+
+@media screen and (max-width:600px){
+
+  #restaurant-overview,
+  #restaurant-main-info{
+    max-width:100%;
   }
 }

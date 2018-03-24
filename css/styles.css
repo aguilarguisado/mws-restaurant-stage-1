@@ -206,7 +206,6 @@ nav p a {
 }
 #restaurants-list li a {
   background-color: orange;
-  border-bottom: 3px solid #eee;
   color: #fff;
   display: inline-block;
   font-size: 10pt;
@@ -215,6 +214,19 @@ nav p a {
   text-align: center;
   text-decoration: none;
   text-transform: uppercase;
+}
+
+/* Focus management*/
+
+.filter-options select:focus,
+.filter-options select:hover{    
+  border-color: black;
+  border-width: 2px;
+}
+
+#restaurants-list li a:focus,
+#restaurants-list li a:hover{
+  background: #1c79c0;
 }
 
 /* ====================== Restaurant Details ====================== */

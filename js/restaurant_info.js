@@ -138,6 +138,17 @@ createReviewHTML = (review) => {
   li.appendChild(reviewContent);
 
   const rating = document.createElement('p');
+
+  if(review.rating >= 5){
+    rating.classList.add('very-good-review');
+  }else if(review.rating == 4){
+    rating.classList.add('good-review');
+  }else if(review.rating <= 2){
+    rating.classList.add('bad-review');
+  }else{
+    rating.classList.add('not-bad-review');
+  }
+
   rating.innerHTML = `Rating: ${review.rating}`;
   rating.id = 'review-rating';
   reviewContent.appendChild(rating);

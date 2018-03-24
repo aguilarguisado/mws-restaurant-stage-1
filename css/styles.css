@@ -242,7 +242,7 @@ nav p a {
   width: 100%;
 }
 #restaurant-img {
-	width: 90%;
+  margin-bottom: -5px;
 }
 #restaurant-address {
   font-size: 1.3rem;
@@ -258,10 +258,11 @@ nav p a {
   padding: 2px 0;
   text-align: center;
   text-transform: uppercase;
-	width: 90%;
 }
 #restaurant-overview{
   align-self: center;
+  width: calc(50% - 20px);
+  margin-right: 20px;
 }
 #restaurant-overview,
 #restaurant-main-info{
@@ -294,10 +295,10 @@ nav p a {
   background-color: #fff;
   display: block;
   list-style-type: none;
-  margin: 0 0 30px;
   overflow: hidden;
   position: relative;
-  max-width: 95%;
+  max-width: 100%;
+  margin: 0 0 20px 0;
 }
 
 #restaurant-hours td {
@@ -322,9 +323,39 @@ nav p a {
   text-align: end;
 }
 
-#review-content-container p{
+#review-comments{
   padding: 10px;
   font-size: 16px;
+}
+
+#review-rating{
+  border-radius: 4px;
+  max-width: 70px;
+  margin: 10px;
+  padding: 5px;
+  text-align: center;
+}
+
+.very-good-review{
+  background: green;
+  color:white;
+}
+
+.good-review{
+  background: yellowgreen;
+  color:black;
+}
+
+.not-bad-review{
+  background: orange;
+  color:black;
+
+}
+
+.bad-review{
+  background: red;
+  color:white;
+
 }
 
 /* ====================== Media Queries ====================== */
@@ -359,8 +390,14 @@ nav p a {
 @media screen and (max-width:600px){
 
   #restaurant-overview,
-  #restaurant-main-info{
+  #restaurant-main-info,
+  #restaurant-main-info table{
     max-width:100%;
+    margin:auto;
+  }
+
+  #restaurant-address{
+    padding-top: 20px;
   }
 
   #review-header-container p{

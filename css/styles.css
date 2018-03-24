@@ -446,8 +446,8 @@ nav p a {
   position: absolute;
   top: -40px;
   left: 0;
-  background: #BF1722;
-  color: white;
+  background: white;
+  color: black;
   padding: 8px;
   z-index:100;
 }

@@ -61,7 +61,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   address.innerHTML = restaurant.address;
 
   const image = document.getElementById('restaurant-img');
-  image.insertAdjacentHTML('beforeend', DBHelper.buildSrcSet(restaurant));
+  image.insertAdjacentHTML('beforeend', DBHelper.buildSrcSet(restaurant, restaurant.name + " descriptive image."));
 
   const cuisine = document.getElementById('restaurant-cuisine');
   cuisine.innerHTML = restaurant.cuisine_type;

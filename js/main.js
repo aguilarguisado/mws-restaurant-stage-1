@@ -143,10 +143,12 @@ createRestaurantHTML = (restaurant) => {
   const li = document.createElement('li');
   li.classList.add('material-element');
 
-  const image = document.createElement('img');
-  image.className = 'restaurant-img';
-  image.alt = 'Main image of the restaurant';
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  const image = document.createElement('picture');
+  image.insertAdjacentHTML('beforeend', DBHelper.buildSrcSet(restaurant, restaurant.name + " descriptive image"));
+
+  // image.className = 'restaurant-img';
+  // image.alt = 'Main image of the restaurant';
+  // image.src = DBHelper.imageUrlForRestaurant(restaurant);
   li.append(image);
 
   // Developing a container for improving logical and structure of every restaurant

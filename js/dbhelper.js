@@ -153,7 +153,7 @@ class DBHelper {
   }
 
   /** Images srcset */
-  static buildSrcSet(restaurant){
+  static buildSrcSet(restaurant, altText){
 
   /** Media sizes
    *  Large: 700px; (>900)
@@ -175,7 +175,7 @@ class DBHelper {
       srcset="${path}-medium_x1${extension} 1x, ${path}-medium_x2${extension} 2x">
     <source media="(max-width: 600px)"
       srcset="${path}-small_x1${extension} 1x, ${path}-small_x2${extension} 2x">
-    <img class="restaurant-img" src="${DBHelper.imageUrlForRestaurant(restaurant)}" alt="Main image of the restaurant">
+    <img class="restaurant-img" src="${DBHelper.imageUrlForRestaurant(restaurant)}" alt="${altText}">
   `;
   }
 

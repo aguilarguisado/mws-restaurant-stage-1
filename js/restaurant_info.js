@@ -20,6 +20,11 @@ window.initMap = () => {
   });
 }
 
+
+window.onload = () => {
+  DBHelper.registerServiceWorker();
+}
+
 /**
  * Get current restaurant from page URL.
  */

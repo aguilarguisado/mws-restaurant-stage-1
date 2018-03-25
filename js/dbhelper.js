@@ -4,6 +4,15 @@
 class DBHelper {
 
   /**
+   * Registering service worker
+   */
+
+  static registerServiceWorker(){
+    if ('serviceWorker' in navigator)
+      navigator.serviceWorker.register('mws-sw.js');
+  }
+
+  /**
    * Database URL.
    * Change this to restaurants.json file location on your server.
    */

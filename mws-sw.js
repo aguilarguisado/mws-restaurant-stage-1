@@ -1,1 +1,3 @@
-console.log("Sw started");
+self.addEventListener('fetch', function(event){
+    console.log(event.request);
+});

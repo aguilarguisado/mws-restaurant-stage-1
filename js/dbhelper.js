@@ -9,7 +9,11 @@ class DBHelper {
 
   static registerServiceWorker(){
     if ('serviceWorker' in navigator)
-      navigator.serviceWorker.register('mws-sw.js');
+      navigator.serviceWorker.register('mws-sw.js').then(function(){
+        console.log('Registration worked!');
+      }).catch(function(){
+        console.log('Registration failed');
+      });
   }
 
   /**

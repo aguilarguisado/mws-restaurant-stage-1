@@ -253,9 +253,12 @@ nav p a {
   line-height: 1.1;
   width: 100%;
 }
-#restaurant-img {
+
+.restaurant-img{
+  width:100%;
   margin-bottom: -5px;
 }
+
 #restaurant-address {
   font-size: 1.3rem;
   margin: 10px 0px;

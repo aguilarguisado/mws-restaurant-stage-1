@@ -61,29 +61,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   address.innerHTML = restaurant.address;
 
   const image = document.getElementById('restaurant-img');
-
-  /** Media sizes
-   *  Large: 700px; (>900)
-   *  Medium: 450px;(900<w<600)
-   *  Small: 300px; (<600)
-   */
-
-  const dotIdx = restaurant.photograph.lastIndexOf('.');
-  const rootDirectory = 'images_src/';
-  const imageName = restaurant.photograph.substr(0, dotIdx);
-  const extension = restaurant.photograph.substr(dotIdx);
-
-  const path = rootDirectory + imageName;
-
-  image.insertAdjacentHTML('beforeend', `
-    <source media="(min-width:900px)" 
-      srcset="${path}-large_x1${extension} 1x, ${path}-large_x2${extension} 2x">
-    <source media="(max-width: 900px) and (min-width: 600px)" 
-      srcset="${path}-medium_x1${extension} 1x, ${path}-medium_x2${extension} 2x">
-    <source media="(max-width: 600px)"
-      srcset="${path}-small_x1${extension} 1x, ${path}-small_x2${extension} 2x">
-    <img class="restaurant-img" src="${DBHelper.imageUrlForRestaurant(restaurant)}" alt="Main image of the restaurant">
-  `);
+  image.insertAdjacentHTML('beforeend', DBHelper.buildSrcSet(restaurant));
 
   const cuisine = document.getElementById('restaurant-cuisine');
   cuisine.innerHTML = restaurant.cuisine_type;

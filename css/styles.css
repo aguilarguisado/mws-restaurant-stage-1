@@ -57,13 +57,17 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
   min-height: 100%;
 }
 #footer {
-  background-color: #444;
-  color: #aaa;
+  background-color: #222;
+  color: white;
   font-size: 8pt;
   letter-spacing: 1px;
   padding: 25px;
   text-align: center;
   text-transform: uppercase;
+}
+
+#footer a{
+  color:yellow;
 }
 /* ====================== Navigation ====================== */
 nav {
@@ -206,7 +210,7 @@ nav p a {
 }
 #restaurants-list li a {
   background-color: orange;
-  color: #fff;
+  color: black;
   display: inline-block;
   font-size: 10pt;
   margin: 15px 0 0;
@@ -227,6 +231,7 @@ nav p a {
 #restaurants-list li a:focus,
 #restaurants-list li a:hover{
   background: #1c79c0;
+  color: white;
 }
 
 /* ====================== Restaurant Details ====================== */

@@ -328,28 +328,28 @@ nav p a {
   font-size: 1.2em;
 }
 
-#review-header-container{
+.review-header-container{
   background: #333;
   display: flex;
 }
 
-#review-header-container p{
+.review-header-container p{
   color: white;
   width: 50%;
   font-size: 16px;
   padding: 10px;
 }
 
-#review-date{
+.review-date{
   text-align: end;
 }
 
-#review-comments{
+.review-comments{
   padding: 10px;
   font-size: 16px;
 }
 
-#review-rating{
+.review-rating{
   border-radius: 4px;
   max-width: 70px;
   margin: 10px;
@@ -421,7 +421,7 @@ nav p a {
     padding-top: 20px;
   }
 
-  #review-header-container p{
+  .review-header-container p{
     font-size: 14px;
     padding: 10px;
    }

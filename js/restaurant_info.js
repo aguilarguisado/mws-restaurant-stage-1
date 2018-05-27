@@ -124,21 +124,21 @@ createReviewHTML = (review) => {
   li.classList.add('material-element');
 
   const reviewHeader = document.createElement('div');
-  reviewHeader.id = 'review-header-container';
+  reviewHeader.classList.add('review-header-container');
   li.appendChild(reviewHeader);
 
   const name = document.createElement('p');
   name.innerHTML = review.name;
-  name.id = 'review-name';
+  name.classList.add('review-name');
   reviewHeader.appendChild(name);
 
   const date = document.createElement('p');
   date.innerHTML = review.date;
-  date.id = 'review-date';
+  date.classList.add('review-date');
   reviewHeader.appendChild(date);
 
   const reviewContent = document.createElement('div');
-  reviewContent.id = 'review-content-container';
+  reviewContent.classList.add('review-content-container');
   li.appendChild(reviewContent);
 
   const rating = document.createElement('p');
@@ -154,12 +154,12 @@ createReviewHTML = (review) => {
   }
 
   rating.innerHTML = `Rating: ${review.rating}`;
-  rating.id = 'review-rating';
+  rating.classList.add('review-rating');
   reviewContent.appendChild(rating);
 
   const comments = document.createElement('p');
   comments.innerHTML = review.comments;
-  comments.id = 'review-comments';
+  comments.classList.add('review-comments');
   reviewContent.appendChild(comments);
 
   return li;

@@ -108,13 +108,13 @@ nav p a {
 /* Add a slash symbol (/) before/behind each list item */
 #breadcrumb li+li:before {
     padding: 8px;
-    color: black;
+    color: blue;
     content: "/\00a0";
 }
 
 /* Add a color to all links inside the list */
 #breadcrumb li a {
-    color: #0275#1c79c0;
+    color: blue;
     text-decoration: none;
 }
 

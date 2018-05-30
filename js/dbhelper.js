@@ -17,6 +17,43 @@ class DBHelper {
   }
 
   /**
+   * Open database
+   */
+
+  static openDatabase(){
+
+    // If the browser does not suppor service worker we don't care abour having a database.
+    if(!navigator.serviceWorker){
+      return Promise.resolve();
+    }
+
+    return  idb.open('restaurants-db', 1, function(upgradeDb){
+        const store = upgradeDb.createObjectStore('restaurants', {
+            keyPath: 'id'
+        });
+    });
+ 
+  }
+
+  static saveRestaurants(restaurants){
+
+    const dbPromise = DBHelper.openDatabase();
+    
+    dbPromise.then(function(db){
+      if(!db) return;
+
+      const tx = db.transaction('restaurants', 'readwrite');
+      const store = tx.objectStore('restaurants');
+
+      restaurants.forEach(function(restaurant){
+        store.put(restaurant);
+      });
+
+    });
+  }
+  
+
+  /**
    * Database URL.
    * Change this to restaurants.json file location on your server.
    */
@@ -35,6 +72,7 @@ class DBHelper {
       if (xhr.status === 200) { // Got a success response from server!
         const json = JSON.parse(xhr.responseText);
         const restaurants = json;
+        DBHelper.saveRestaurants(restaurants);
         callback(null, restaurants);
       } else { // Oops!. Got an error from server.
         const error = (`Request failed. Returned status of ${xhr.status}`);
@@ -55,6 +93,7 @@ class DBHelper {
       } else {
         const restaurant = restaurants.find(r => r.id == id);
         if (restaurant) { // Got the restaurant
+          DBHelper.saveRestaurants([restaurants]);      
           callback(null, restaurant);
         } else { // Restaurant does not exist in the database
           callback('Restaurant does not exist', null);

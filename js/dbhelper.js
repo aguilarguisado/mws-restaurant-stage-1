@@ -51,6 +51,42 @@ class DBHelper {
 
     });
   }
+
+  
+  static getCachedRestaurants(callback){
+
+    const dbPromise = DBHelper.openDatabase();
+    
+    dbPromise.then(function(db){
+      if(!db) return;
+
+      const index = db.transaction('restaurants')
+      .objectStore('restaurants');
+
+      return index.getAll().then(function(restaurants){
+        callback(null, restaurants);  
+      });      
+
+    });
+  }
+
+  
+  static getCachedRestaurant(restaurantId, callback){
+
+    const dbPromise = DBHelper.openDatabase();
+    
+    dbPromise.then(function(db){
+      if(!db) return;
+      
+      const index = db.transaction('restaurants')
+      .objectStore('restaurants');
+
+      return index.get(restaurantId).then(function(restaurant){
+        callback(null, restaurant);  
+      });
+
+    });
+  }
   
 
   /**
@@ -66,6 +102,10 @@ class DBHelper {
    * Fetch all restaurants.
    */
   static fetchRestaurants(callback) {
+
+    // We get first cached restaurants
+    DBHelper.getCachedRestaurants(callback);
+
     let xhr = new XMLHttpRequest();
     xhr.open('GET', DBHelper.DATABASE_URL);
     xhr.onload = () => {
@@ -86,6 +126,12 @@ class DBHelper {
    * Fetch a restaurant by its ID.
    */
   static fetchRestaurantById(id, callback) {
+
+    // We get first cached restaurants
+    DBHelper.getCachedRestaurants(id, callback);
+
+
+
     // fetch all restaurants with proper error handling.
     DBHelper.fetchRestaurants((error, restaurants) => {
       if (error) {

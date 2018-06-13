@@ -129,9 +129,9 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   }
   
   reviews.forEach(review => {
-    ul.appendChild(createReviewHTML(review));
+    reviewList.appendChild(createReviewHTML(review));
   });
-  container.appendChild(ul);
+  container.appendChild(reviewList);
 }
 
 /**
@@ -151,7 +151,7 @@ createReviewHTML = (review) => {
   reviewHeader.appendChild(name);
 
   const date = document.createElement('p');
-  date.innerHTML = review.date;
+  date.innerHTML = new Date(review.createdAt).toLocaleString();
   date.classList.add('review-date');
   reviewHeader.appendChild(date);
 

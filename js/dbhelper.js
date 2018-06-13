@@ -39,7 +39,7 @@ class DBHelper {
 
     const dbPromise = DBHelper.openDatabase();
     
-    dbPromise.then(function(db){
+    return dbPromise.then(function(db){
       if(!db) return;
 
       const tx = db.transaction('restaurants', 'readwrite');
@@ -52,12 +52,29 @@ class DBHelper {
     });
   }
 
-  
+  static saveReviews(idRestaurant, reviews){
+
+    const dbPromise = DBHelper.openDatabase();
+    
+    return dbPromise.then(function(db){
+      if(!db) return;
+
+      return DBHelper.getCachedRestaurant(parseInt(idRestaurant), (error, restaurant) => {
+        if(restaurant){
+          restaurant.reviews = reviews;
+          return DBHelper.saveRestaurants([restaurant]);
+        }
+      });
+
+    });
+  }
+
+ 
   static getCachedRestaurants(callback){
 
     const dbPromise = DBHelper.openDatabase();
     
-    dbPromise.then(function(db){
+    return dbPromise.then(function(db){
       if(!db) return;
 
       const index = db.transaction('restaurants')
@@ -76,11 +93,10 @@ class DBHelper {
 
     const dbPromise = DBHelper.openDatabase();
     
-    dbPromise.then(function(db){
+    return dbPromise.then(function(db){
       if(!db) return;
       
-      const index = db.transaction('restaurants')
-      .objectStore('restaurants');
+      const index = db.transaction('restaurants').objectStore('restaurants');
 
       return index.get(parseInt(restaurantId)).then(function(restaurant){
         if (restaurant)
@@ -89,6 +105,8 @@ class DBHelper {
           const error = (`Restaurant with id ${restaurantId} not found`);
           callback(error, null);
         }
+
+        return restaurant;
 
       });
 
@@ -156,6 +174,7 @@ class DBHelper {
 
         if (restaurant) { // Got the restaurant
           DBHelper.saveRestaurants([restaurant]);      
+          DBHelper.fetchReviewsByRestaurant(id, callback);
           callback(null, restaurant);
         } else { // Restaurant does not exist in the database
           callback('Restaurant does not exist', null);
@@ -167,6 +186,35 @@ class DBHelper {
     };
     xhr.send();
   }
+
+  /**
+   * Fetch a restaurant by its ID.
+   */
+  static fetchReviewsByRestaurant(id, callback) {
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', DBHelper.REVIEWS_URL+id);
+    xhr.onload = () => {
+      if (xhr.status === 200) { // Got a success response from server!
+        const json = JSON.parse(xhr.responseText);
+        const reviews = json;
+
+        if (reviews) { // Got the restaurant
+          DBHelper.saveReviews(id, reviews).then(()=>DBHelper.getCachedRestaurant(id, callback)); 
+          ;
+               
+          callback(null, restaurant);
+        } else { // Restaurant does not exist in the database
+          callback('Restaurant does not exist', null);
+        }
+      } else { // Oops!. Got an error from server.
+        const error = (`Request failed. Returned status of ${xhr.status}`);
+        callback(error, null);
+      }
+    };
+    xhr.send();
+  }
+
 
   /**
    * Fetch restaurants by a cuisine type with proper error handling.

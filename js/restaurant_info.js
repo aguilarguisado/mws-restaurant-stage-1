@@ -32,6 +32,7 @@ window.initMap = () => {
 
   /** We add a listener to form submit */
   const form = document.getElementById("review-form");
+  if (form){
   form.addEventListener("submit", function (event) {
     event.preventDefault();
     const review = {"restaurant_id": self.restaurant.id};
@@ -50,6 +51,7 @@ window.initMap = () => {
       })
       .catch(error => console.error(error))
   });
+}
 
  
 }

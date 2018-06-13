@@ -52,8 +52,6 @@ window.initMap = () => {
       .catch(error => console.error(error))
   });
 }
-
- 
 }
 
 window.onload = () => {

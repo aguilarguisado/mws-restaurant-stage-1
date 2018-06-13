@@ -57,7 +57,7 @@
         </p>
         <p>
           <label for="rating">Rating</label>
-          <select name="rating">
+          <select id="rating" name="rating">
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3" selected>3</option>
@@ -67,7 +67,7 @@
         </p>
         <p>
           <label for="comments">Your comments</label>          
-          <textarea rows="4" name="comments" placeholder="This place is amazing!" required></textarea>
+          <textarea rows="4" id="comments" name="comments" placeholder="This place is amazing!" required></textarea>
         </p>
         <p>
           <input type="submit" value="Send">
@@ -91,13 +91,15 @@
   <!-- Main javascript file -->
   <script type="text/javascript" src="js/restaurant_info.min.js"></script>
 
-  <link rel="stylesheet" href="css/styles.min.css" type="text/css">
 
+  <link async rel="stylesheet" href="css/restaurant-style.min.css">
+  <link async rel="stylesheet" href="css/styles.min.css">
 
   <!-- Google Maps -->
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDmVLRv1s1hCsLp_0fRsALPRArejqUV_G0&libraries=places&callback=initMap"></script>
   <!-- End scripts -->
 
 </body>
+
 
 </html>

@@ -293,15 +293,15 @@ class DBHelper {
       
       return fetch(`${DBHelper.DATABASE_URL}/reviews`, {
         body: JSON.stringify(review), 
-        cache: 'no-cache',
+        cache: 'cache',
         credentials: 'same-origin',
         headers: {
           'content-type': 'application/json',
         },
         method: 'POST',
-        mode: 'no-cors', 
+        mode: 'cors', 
         redirect: 'follow', 
-        referrer: 'no-referrer', 
+        referrer: 'referrer', 
       })
       .then(response => DBHelper.fetchRestaurantById(review.restaurant_id, callback))
       .catch(error => {
@@ -418,7 +418,7 @@ class DBHelper {
   //const dotIdx = restaurant.photograph.lastIndexOf('.');
   const rootDirectory = 'images_src/';
   //const imageName = restaurant.photograph.substr(0, dotIdx);
-  const extension = '.jpg';// restaurant.photograph.substr(dotIdx);
+  const extension = '.webp';// restaurant.photograph.substr(dotIdx);
 
   const path = rootDirectory + restaurant.photograph;
 
@@ -429,7 +429,7 @@ class DBHelper {
       srcset="${path}-medium_x1${extension} 1x, ${path}-medium_x2${extension} 2x">
     <source media="(max-width: 600px)"
       srcset="${path}-small_x1${extension} 1x, ${path}-small_x2${extension} 2x">
-    <img class="restaurant-img" src="${DBHelper.imageUrlForRestaurant(restaurant)}" alt="${altText}">
+    <img class="restaurant-img" src="${path}.webp" alt="${altText}">
   `;
   }
 
@@ -440,12 +440,7 @@ class DBHelper {
     return (`./restaurant.html?id=${restaurant.id}`);
   }
 
-  /**
-   * Restaurant image URL.
-   */
-  static imageUrlForRestaurant(restaurant) {
-    return (`/img/${restaurant.photograph}.jpg`);
-  }
+  
 
   /**
    * Map marker for a restaurant.

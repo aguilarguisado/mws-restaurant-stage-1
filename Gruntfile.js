@@ -24,19 +24,19 @@ module.exports = function(grunt) {
           },{
             name: 'medium',
             suffix: '_x1',
-            width: 450
+            width: 250
           },{
             name: 'medium',
             suffix: '_x2',
-            width: 900
+            width: 500
           }, {
             name: 'small',
             suffix: '_x1',
-            width: 300
+            width: 75
           },{
             name: 'small',
             suffix: '_x2',
-            width: 600
+            width: 75
           }]
         },
 
@@ -56,7 +56,7 @@ module.exports = function(grunt) {
     /* Clear out the images directory if it exists */
     clean: {
       dev: {
-        src: ['images'],
+        src: ['images_src'],
       },
     },
 
@@ -64,9 +64,33 @@ module.exports = function(grunt) {
     mkdir: {
       dev: {
         options: {
-          create: ['images']
+          create: ['images_src']
         },
       },
+    },
+
+    cssmin: {
+      target: {
+        files: [{
+          expand: true,
+          cwd: 'css',
+          src: ['*.css', '!*.min.css'],
+          dest: 'css',
+          ext: '.min.css'
+        }]
+      }
+    },
+
+    uglify: {
+      options: {
+        mangle: false
+      },
+      my_target: {
+        files: {
+          'js/main.min.js': ['js/dbhelper.js','js/main.js'],
+          'js/restaurant_info.min.js':['js/dbhelper.js','js/restaurant_info.js']
+        }
+      }
     },
 
     /* Copy the "fixed" images that don't go through processing into the images/directory */
@@ -85,6 +109,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-mkdir');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-uglify-es');
+
+
   grunt.registerTask('default', ['clean', 'mkdir', 'copy', 'responsive_images']);
 
 };

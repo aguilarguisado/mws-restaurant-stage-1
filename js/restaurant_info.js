@@ -17,9 +17,42 @@ window.initMap = () => {
       fillBreadcrumb();
       DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
     }
-  });
-}
 
+    //We send offline reviews if there are any
+    DBHelper.resendOfflineReviews((error, restaurant)=>{
+      self.restaurant = restaurant;
+      if (!restaurant) {
+        console.error(error);
+        return;
+      }
+      fillRestaurantHTML();
+    });
+
+  });
+
+  /** We add a listener to form submit */
+  const form = document.getElementById("review-form");
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    const review = {"restaurant_id": self.restaurant.id};
+    const formdata = new FormData(form);
+
+    for (let [key, value] of formdata.entries()) {
+      review[key] = value;
+    }
+
+    DBHelper.sendReview(review)
+      .then(data => {
+        const ul = document.getElementById('reviews-list');
+        review.offline = true;         
+        ul.appendChild(createReviewHTML(review));
+        form.reset();
+      })
+      .catch(error => console.error(error))
+  });
+
+ 
+}
 
 window.onload = () => {
   DBHelper.registerServiceWorker();
@@ -45,7 +78,7 @@ fetchRestaurantFromURL = (callback) => {
         return;
       }
       fillRestaurantHTML();
-      callback(null, restaurant)
+      callback(null, restaurant);
     });
   }
 }
@@ -151,7 +184,14 @@ createReviewHTML = (review) => {
   reviewHeader.appendChild(name);
 
   const date = document.createElement('p');
-  date.innerHTML = new Date(review.updatedAt).toLocaleString();
+  if(review.offline){
+    //The review is totally offline
+    date.innerHTML = 'Not synchronized yet with the server';
+  }else{
+    // The review is synchronized with the server
+    date.innerHTML = new Date(review.createdAt).toLocaleString();
+  }
+
   date.classList.add('review-date');
   reviewHeader.appendChild(date);
 

@@ -35,6 +35,21 @@ class DBHelper {
  
   }
 
+  static openOfflineReviewsDatabase(){
+
+    // If the browser does not suppor service worker we don't care abour having a database.
+    if(!navigator.serviceWorker){
+      return Promise.resolve();
+    }
+
+    return  idb.open('offline-reviews', 1, function(upgradeDb){
+        const store = upgradeDb.createObjectStore('offline-reviews', {
+            keyPath: 'restaurant_id'
+        });
+    });
+ 
+  }
+
   static saveRestaurants(restaurants){
 
     const dbPromise = DBHelper.openDatabase();
@@ -52,23 +67,70 @@ class DBHelper {
     });
   }
 
-  static saveReviews(idRestaurant, reviews){
+  static saveRestaurantWithReviews(restaurant, reviews){
 
     const dbPromise = DBHelper.openDatabase();
     
     return dbPromise.then(function(db){
       if(!db) return;
-
-      return DBHelper.getCachedRestaurant(parseInt(idRestaurant), (error, restaurant) => {
         if(restaurant){
           restaurant.reviews = reviews;
+          restaurant.reviews = restaurant.reviews.map(
+            function(review){
+              review.offline = undefined; 
+              return review;
+          })
           return DBHelper.saveRestaurants([restaurant]);
         }
-      });
+    });
+  }
+
+  static saveOfflineReview(review){
+
+    const dbPromise = DBHelper.openOfflineReviewsDatabase();
+    
+    return dbPromise.then(function(db){
+      if(!db) return;
+        const tx = db.transaction('offline-reviews', 'readwrite');
+        const store = tx.objectStore('offline-reviews');
+        store.put(review);
+    });
+  }
+
+  static getCachedOfflineReviews(){
+    const dbPromise = DBHelper.openOfflineReviewsDatabase();
+    
+		return dbPromise.then(function(db){
+      if (!db) return;
+
+      const tx = db.transaction('offline-reviews');
+      const store = tx.objectStore('offline-reviews');
+      
+			return store.getAll();
 
     });
   }
 
+  static resendOfflineReviews(callback) {
+			DBHelper.getCachedOfflineReviews().then(offlineReviews => {
+
+        offlineReviews.forEach(review => {
+					DBHelper.sendReview(review, callback);
+        });
+        
+				DBHelper.clearOfflineReviews();
+			});
+	}
+
+	static clearOfflineReviews() {
+    const dbPromise = DBHelper.openOfflineReviewsDatabase();
+    
+		dbPromise.then(db => {
+			const tx = db.transaction('offline-reviews', 'readwrite');
+			const store = tx.objectStore('offline-reviews').clear();
+		})
+		return;
+	}
  
   static getCachedRestaurants(callback){
 
@@ -99,17 +161,29 @@ class DBHelper {
       const index = db.transaction('restaurants').objectStore('restaurants');
 
       return index.get(parseInt(restaurantId)).then(function(restaurant){
-        if (restaurant)
-          callback(null,restaurant);  
-        else{
+        if (!restaurant){
           const error = (`Restaurant with id ${restaurantId} not found`);
           callback(error, null);
         }
 
         return restaurant;
 
+      }).then(function(restaurant){
+        if(restaurant){
+          //Getting offline reviews if there is any
+          DBHelper.getCachedOfflineReviews().then(reviews => {
+            const offlineReviews = reviews.filter(review => review.restaurant_id == restaurant.id).map(
+              function(review){
+                review.offline = true; 
+                return review;
+            });
+            if(!restaurant.reviews) restaurant.reviews = [];
+            if(!offlineReviews) offlineReviews = [];
+            restaurant.reviews = restaurant.reviews.concat(offlineReviews);
+            callback(null, restaurant);
+          });
+        }
       });
-
     });
   }
   
@@ -173,8 +247,7 @@ class DBHelper {
         const restaurant = json;
 
         if (restaurant) { // Got the restaurant
-          DBHelper.saveRestaurants([restaurant]);      
-          DBHelper.fetchReviewsByRestaurant(id, callback);
+          DBHelper.fetchReviewsByRestaurant(restaurant, callback);
           callback(null, restaurant);
         } else { // Restaurant does not exist in the database
           callback('Restaurant does not exist', null);
@@ -190,7 +263,8 @@ class DBHelper {
   /**
    * Fetch a restaurant by its ID.
    */
-  static fetchReviewsByRestaurant(id, callback) {
+  static fetchReviewsByRestaurant(restaurant, callback) {
+    const id = restaurant.id;
 
     let xhr = new XMLHttpRequest();
     xhr.open('GET', DBHelper.REVIEWS_URL+id);
@@ -200,10 +274,7 @@ class DBHelper {
         const reviews = json;
 
         if (reviews) { // Got the restaurant
-          DBHelper.saveReviews(id, reviews).then(()=>DBHelper.getCachedRestaurant(id, callback)); 
-          ;
-               
-          callback(null, restaurant);
+          DBHelper.saveRestaurantWithReviews(restaurant, reviews).then(()=>DBHelper.getCachedRestaurant(id, callback)); 
         } else { // Restaurant does not exist in the database
           callback('Restaurant does not exist', null);
         }
@@ -215,6 +286,36 @@ class DBHelper {
     xhr.send();
   }
 
+
+  static sendReview(review, callback){
+
+      // We are using fetch to implement both ways to make requests (other times we have used XMLHttpRequest)
+      
+      return fetch(`${DBHelper.DATABASE_URL}/reviews`, {
+        body: JSON.stringify(review), 
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        headers: {
+          'content-type': 'application/json',
+        },
+        method: 'POST',
+        mode: 'no-cors', 
+        redirect: 'follow', 
+        referrer: 'no-referrer', 
+      })
+      .then(response => DBHelper.fetchRestaurantById(review.restaurant_id, callback))
+      .catch(error => {
+        /**
+         * We store in db to send after
+         */
+        review.createdAt = new Date().getTime();
+        
+        // Store into Indexed DB
+        DBHelper.saveOfflineReview(review);
+
+        return;
+      });
+  }
 
   /**
    * Fetch restaurants by a cuisine type with proper error handling.

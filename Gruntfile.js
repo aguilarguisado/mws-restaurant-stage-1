@@ -80,7 +80,7 @@ module.exports = function(grunt) {
         }]
       }
     },
-
+    // npm install gruntjs/grunt-contrib-uglify#harmony --save
     uglify: {
       options: {
         mangle: false
@@ -93,6 +93,41 @@ module.exports = function(grunt) {
       }
     },
 
+    cwebp: {
+      /*static: {
+        files: { 
+          'dist/img-png.webp': 'src/img.png',
+          'dist/img-jpg.webp': 'src/img.jpg',
+          'dist/img-gif.webp': 'src/img.gif'
+        }
+      },*/
+      dynamic: {
+        options: {
+          q: 50
+        },
+        files: [{
+          expand: true,
+        cwd: './',
+          
+          src: ['images_src/*.{png,jpg,gif}', 'img/*.{png,jpg,gif}'],
+          dest: './'
+        }]
+      }
+    },
+
+    // gzip assets 1-to-1 for production
+    compress: {
+      main: {
+        options: {
+          mode: 'gzip'
+        },
+        expand: true,
+        cwd: './',
+        src: ['js/*min.*', 'css/*min.*'],
+        dest: 'public/'
+      }
+    },
+
     /* Copy the "fixed" images that don't go through processing into the images/directory */
     copy: {
       dev: {
@@ -100,7 +135,14 @@ module.exports = function(grunt) {
           expand: true,
           src: 'images_src/fixed/*.{gif,jpg,png}',
           dest: 'images/'
-        }]
+        },
+        {
+          expand: true,
+          src: '*.{gif,jpg,png}',
+          cwd: 'img',          
+          dest: 'images_src'
+        },
+      ]
       },
     },
   });
@@ -109,10 +151,17 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-mkdir');
+  grunt.loadNpmTasks('grunt-cwebp');
+
   grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-compress');
+
   grunt.loadNpmTasks('grunt-contrib-uglify-es');
 
 
-  grunt.registerTask('default', ['clean', 'mkdir', 'copy', 'responsive_images']);
+  grunt.registerTask('default', ['clean', 'mkdir', 'copy', 'responsive_images', 'cwebp', 'cssmin', 'uglify', 'compress']);
+
+  grunt.registerTask('deploy', ['cssmin', 'uglify', 'compress']);
+  
 
 };

@@ -44,10 +44,10 @@ class DBHelper {
 
       const tx = db.transaction('restaurants', 'readwrite');
       const store = tx.objectStore('restaurants');
-
-      restaurants.forEach(function(restaurant){
-        store.put(restaurant);
-      });
+      
+      for(let i = 0; i< restaurants.length; i++){
+        store.put(restaurants[i]);
+      }
 
     });
   }
@@ -64,7 +64,8 @@ class DBHelper {
       .objectStore('restaurants');
 
       return index.getAll().then(function(restaurants){
-        callback(null, restaurants);  
+        if (restaurants)
+          callback(null, restaurants);  
       });      
 
     });
@@ -81,8 +82,14 @@ class DBHelper {
       const index = db.transaction('restaurants')
       .objectStore('restaurants');
 
-      return index.get(restaurantId).then(function(restaurant){
-        callback(null, restaurant);  
+      return index.get(parseInt(restaurantId)).then(function(restaurant){
+        if (restaurant)
+          callback(null,restaurant);  
+        else{
+          const error = (`Restaurant with id ${restaurantId} not found`);
+          callback(error, null);
+        }
+
       });
 
     });
@@ -138,24 +145,27 @@ class DBHelper {
   static fetchRestaurantById(id, callback) {
 
     // We get first cached restaurants
-    DBHelper.getCachedRestaurants(id, callback);
+    DBHelper.getCachedRestaurant(id, callback);
 
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', DBHelper.RESTAURANTS_URL+'/'+id);
+    xhr.onload = () => {
+      if (xhr.status === 200) { // Got a success response from server!
+        const json = JSON.parse(xhr.responseText);
+        const restaurant = json;
 
-
-    // fetch all restaurants with proper error handling.
-    DBHelper.fetchRestaurants((error, restaurants) => {
-      if (error) {
-        callback(error, null);
-      } else {
-        const restaurant = restaurants.find(r => r.id == id);
         if (restaurant) { // Got the restaurant
-          DBHelper.saveRestaurants([restaurants]);      
+          DBHelper.saveRestaurants([restaurant]);      
           callback(null, restaurant);
         } else { // Restaurant does not exist in the database
           callback('Restaurant does not exist', null);
         }
+      } else { // Oops!. Got an error from server.
+        const error = (`Request failed. Returned status of ${xhr.status}`);
+        callback(error, null);
       }
-    });
+    };
+    xhr.send();
   }
 
   /**

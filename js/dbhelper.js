@@ -91,11 +91,21 @@ class DBHelper {
 
   /**
    * Database URL.
-   * Change this to restaurants.json file location on your server.
    */
   static get DATABASE_URL() {
     const port = 1337 // Change this to your server port
-    return `http://localhost:${port}/restaurants`;
+    return `http://localhost:${port}`;
+  }
+
+
+  static get RESTAURANTS_URL() {
+    const port = 1337 // Change this to your server port
+    return this.DATABASE_URL + '/restaurants';
+  }
+
+  static get REVIEWS_URL() {
+    const port = 1337 // Change this to your server port
+    return this.DATABASE_URL + '/reviews/?restaurant_id=';
   }
 
   /**
@@ -107,7 +117,7 @@ class DBHelper {
     DBHelper.getCachedRestaurants(callback);
 
     let xhr = new XMLHttpRequest();
-    xhr.open('GET', DBHelper.DATABASE_URL);
+    xhr.open('GET', DBHelper.RESTAURANTS_URL);
     xhr.onload = () => {
       if (xhr.status === 200) { // Got a success response from server!
         const json = JSON.parse(xhr.responseText);

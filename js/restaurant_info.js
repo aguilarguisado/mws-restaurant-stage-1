@@ -61,6 +61,10 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   address.innerHTML = restaurant.address;
 
   const image = document.getElementById('restaurant-img');
+  while (image.firstChild) {
+    image.removeChild(image.firstChild);
+  }
+
   image.insertAdjacentHTML('beforeend', DBHelper.buildSrcSet(restaurant, restaurant.name + " descriptive image."));
 
   const cuisine = document.getElementById('restaurant-cuisine');
@@ -79,6 +83,11 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
  */
 fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => {
   const hours = document.getElementById('restaurant-hours');
+
+  while (hours.firstChild) {
+    hours.removeChild(hours.firstChild);
+  }
+
   for (let key in operatingHours) {
     const row = document.createElement('tr');
 
@@ -99,9 +108,18 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
  */
 fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const container = document.getElementById('reviews-container');
+
+  while (container.firstChild) {
+    container.removeChild(container.firstChild);
+  }
+
   const title = document.createElement('h2');
   title.innerHTML = 'Reviews';
+  title.style.width ='100%';
   container.appendChild(title);
+
+  const reviewList = document.createElement('ul');
+  reviewList.id = 'reviews-list';
 
   if (!reviews) {
     const noReviews = document.createElement('p');
@@ -109,7 +127,7 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
     container.appendChild(noReviews);
     return;
   }
-  const ul = document.getElementById('reviews-list');
+  
   reviews.forEach(review => {
     ul.appendChild(createReviewHTML(review));
   });
